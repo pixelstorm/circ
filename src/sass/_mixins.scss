@@ -1,0 +1,70 @@
+@mixin badge() {
+  border-bottom: 4px solid map-get($colors, darkest);
+  color: map-get($colors, darkest);
+  width: 100%;
+  min-height: 37px;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  font-size: map-get($fontSize, larger);
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+@mixin button($background-color, $color) {
+      background-color: map-get($colors, $background-color);
+      font-weight: map-get($fontWeight, medium);
+      font-size: map-get($fontSize, smaller); 
+      line-height: 12px;
+      display: inline-flex!important;
+      color: map-get($colors, $color);
+      align-items: center;
+      padding: 16px!important;
+      border-radius: 0px;
+      justify-content: center;
+      transition: border .3s,background .3s,opacity .3s,color .3s,-webkit-transform .3s,-webkit-box-shadow .3s;
+      font-size: 16px!important;
+
+      &:hover {
+        box-shadow: inset 0 0 0 100px rgb(0 0 0 / 20%);
+      }
+}
+
+@mixin title() {
+      font-weight: map-get($fontWeight, bold);
+      color: map-get($colors, darkest);
+}
+
+@mixin section-title() {
+      color: map-get($colors, dark);
+      font-weight: map-get($fontWeight, semibold);
+      font-size: map-get($fontSize, larger-1);
+      text-transform: uppercase;
+  
+}
+
+@mixin fluid-type($properties, $min-vw, $max-vw, $min-value, $max-value) {
+  @each $property in $properties {
+    #{$property}: $min-value;
+  }
+
+  @media (min-width: $min-vw) {
+    @each $property in $properties {
+      #{$property}: calc(#{$min-value} + #{strip-unit($max-value - $min-value)} * (100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)});
+    }
+  }
+
+  @media (min-width: $max-vw) {
+    @each $property in $properties {
+      #{$property}: $max-value;
+    }
+  }
+}
+
+@function strip-unit($number) {
+  @if type-of($number) == "number" and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
